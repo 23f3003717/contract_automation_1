@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POP Contract – {{ provider_name }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Arial&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11pt;
+      color: #000;
+      background: #fff;
+    }
+    .company-name {
+    font-size: 17pt;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #007BFF; /* 🔵 Blue color */
+    margin-bottom: 4pt;
+}
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 18mm 20mm 18mm 20mm;
+      background: #fff;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 18pt;
+      padding-bottom: 10pt;
+      border-bottom: 2px solid #000;
+    }
+
+    .company-name {
+      font-size: 17pt;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #007BFF; /* 🔵 Blue color */
+      margin-bottom: 4pt;
+    }
+
+    .agreement-type {
+      font-size: 12pt;
+      font-weight: bold;
+      color: #222;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Intro Paragraph ── */
+    .intro {
+      margin-bottom: 14pt;
+      text-align: justify;
+      line-height: 1.7;
+    }
+
+    .intro p {
+      margin-bottom: 6pt;
+    }
+
+    .parties-block {
+      margin: 10pt 0 14pt 0;
+      line-height: 1.8;
+    }
+
+    .collective-ref {
+      margin-top: 8pt;
+      font-style: italic;
+    }
+
+    /* ── Sections ── */
+    .section {
+      margin-bottom: 14pt;
+    }
+
+    .section-title {
+      font-size: 11.5pt;
+      font-weight: bold;
+      margin-bottom: 6pt;
+    }
+
+    .section-body {
+      line-height: 1.75;
+      text-align: justify;
+    }
+
+    /* ── Bullet Lists ── */
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 4pt 0;
+    }
+
+    .bullet-list li {
+      padding-left: 18pt;
+      margin-bottom: 5pt;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .bullet-list li::before {
+      content: "●";
+      position: absolute;
+      left: 0;
+      font-size: 8pt;
+      top: 2pt;
+    }
+
+    /* ── Sub-roles ── */
+    .role-block {
+      margin-bottom: 8pt;
+    }
+
+    .role-title {
+      font-weight: bold;
+      margin-bottom: 3pt;
+    }
+
+    /* ── Dynamic Highlight Fields ── */
+    .dynamic {
+      font-weight: bold;
+    }
+
+    /* ── Signature Section ── */
+    .signature-section {
+      margin-top: 24pt;
+      page-break-inside: avoid;
+    }
+
+    .signature-title {
+      font-size: 11.5pt;
+      font-weight: bold;
+      margin-bottom: 14pt;
+    }
+
+    .sig-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .sig-table td {
+      width: 50%;
+      vertical-align: top;
+      padding: 0 10pt 0 0;
+    }
+
+    .sig-table td:last-child {
+      padding: 0 0 0 10pt;
+    }
+
+    .sig-party-name {
+      font-weight: bold;
+      margin-bottom: 14pt;
+      font-size: 10.5pt;
+    }
+
+    .sig-row {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 16pt;
+      gap: 6pt;
+    }
+
+    .sig-label {
+      font-size: 10pt;
+      white-space: nowrap;
+      min-width: 80pt;
+    }
+
+    .sig-line {
+      flex: 1;
+      border-bottom: 1px solid #000;
+      height: 18pt;
+      min-width: 80pt;
+    }
+
+    .sig-filled {
+      flex: 1;
+      border-bottom: 1px solid #000;
+      height: 18pt;
+      font-size: 10pt;
+      padding-bottom: 2pt;
+      color: #000;
+    }
+
+    @media print {
+      .page { margin: 0; padding: 18mm 20mm; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="header">
+    <div class="company-name">KPB SUPPORTS SOLUTIONS PVT LTD</div>
+    <div class="agreement-type">(Pay-on-Performance Agreement)</div>
+  </div>
+
+  <!-- ══ INTRO ══ -->
+  <div class="intro">
+    <p>
+      This Agreement is made on this <span class="dynamic">{{ agreement_date }}</span>, between
+    </p>
+    <div class="parties-block">
+      <p>
+        <strong>KPB SUPPORTS SOLUTIONS PVT LTD</strong>, having its registered office at Near G L Bajaj,
+        Knowledge Park III, Greater Noida, hereinafter referred to as the <strong>"Company"</strong>,
+      </p>
+      <p style="text-align:center; margin: 8pt 0; font-weight:bold;">AND</p>
+      <p>
+        <span class="dynamic">{{ provider_name }}</span>, hereinafter referred to as the <strong>"Service Provider"</strong>.
+      </p>
+    </div>
+    <p class="collective-ref">Both parties shall be collectively referred to as the <strong>"Parties"</strong>.</p>
+  </div>
+
+  <!-- ══ SECTION 1 ══ -->
+  <div class="section">
+    <div class="section-title">1. Effective Date &amp; Term</div>
+    <div class="section-body">
+      This Pay-on-Performance (POP) Agreement shall be effective from
+      <span class="dynamic">{{ effective_date }}</span> and shall continue onwards unless terminated
+      by either party as per the terms defined herein.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 2 ══ -->
+  <div class="section">
+    <div class="section-title">2. Scope of Work</div>
+    <div class="section-body">
+      The Service Provider agrees to deliver services as per the requirements shared by the Company,
+      including but not limited to outreach, lead generation, client acquisition, or any other mutually
+      agreed services.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 3 ══ -->
+  <div class="section">
+    <div class="section-title">3. Commercial Terms (Pay-on-Performance Model)</div>
+    <ul class="bullet-list">
+      <li>This agreement is strictly based on a Pay-on-Performance (POP) model.</li>
+      <li>
+        The Service Provider shall be entitled to a payment equivalent to
+        <span class="dynamic">{{ commission }}% ({{ commission_word }} percent)</span>
+        of the total billing amount received by the Company from the respective client generated or
+        serviced through the Service Provider's efforts.
+      </li>
+      <li>
+        Payment shall be applicable only on successful conversion and actual revenue realization
+        from the client.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 4 ══ -->
+  <div class="section">
+    <div class="section-title">4. Payment Terms</div>
+    <ul class="bullet-list">
+      <li>The Company shall release payments to the Service Provider only after receiving payment from the client.</li>
+      <li>
+        The applicable payout (<span class="dynamic">{{ commission }}%</span>) will be calculated on the
+        net billing amount received.
+      </li>
+      <li>
+        Payment timelines shall be processed within 7–15 days from the date of receipt of payment from the
+        client, unless otherwise mutually agreed.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 5 ══ -->
+  <div class="section">
+    <div class="section-title">5. Compliance &amp; Conditions</div>
+    <ul class="bullet-list">
+      <li>The Service Provider must ensure quality delivery and adhere to agreed processes and guidelines.</li>
+      <li>
+        Any non-compliance, misrepresentation, or failure to meet agreed standards may result in withholding
+        or cancellation of payment.
+      </li>
+      <li>
+        The Company reserves the right to validate and verify performance and billing before releasing payments.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 6 ══ -->
+  <div class="section">
+    <div class="section-title">6. Roles &amp; Responsibilities</div>
+    <div class="section-body">
+      <div class="role-block">
+        <div class="role-title">Service Provider:</div>
+        <ul class="bullet-list">
+          <li>Execute assigned tasks and meet defined performance expectations</li>
+          <li>Maintain professionalism and confidentiality</li>
+          <li>Provide regular updates and reports</li>
+        </ul>
+      </div>
+      <div class="role-block">
+        <div class="role-title">Company:</div>
+        <ul class="bullet-list">
+          <li>Provide necessary requirements, coordination, and support</li>
+          <li>Ensure transparent tracking of billing and performance</li>
+          <li>Release payments as per agreed terms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION 7 ══ -->
+  <div class="section">
+    <div class="section-title">7. Confidentiality</div>
+    <div class="section-body">
+      Both Parties agree to maintain strict confidentiality of all business, client, and operational
+      information shared during the tenure of this agreement.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 8 ══ -->
+  <div class="section">
+    <div class="section-title">8. Termination</div>
+    <ul class="bullet-list">
+      <li>Either party may terminate this Agreement by providing 7–15 days' prior written notice.</li>
+      <li>
+        In the event of termination, payments for completed and validated performance shall be processed
+        as per agreed terms.
+      </li>
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 9 ══ -->
+  <div class="section">
+    <div class="section-title">9. Dispute Resolution</div>
+    <div class="section-body">
+      Any disputes arising out of this Agreement shall be resolved mutually. In case of non-resolution,
+      the matter shall be subject to the jurisdiction of
+      <span class="dynamic">{{ city }}</span> courts.
+    </div>
+  </div>
+
+  <!-- ══ SECTION 10 ══ -->
+  <div class="section">
+    <div class="section-title">10. General Terms</div>
+    <ul class="bullet-list">
+      <li>This Agreement does not create any employer-employee relationship.</li>
+      <li>Any amendments must be made in writing and mutually agreed upon by both Parties.</li>
+    </ul>
+  </div>
+
+  <!-- ══ SECTION 11 – SIGNATURES ══ -->
+  <div class="signature-section">
+    <div class="signature-title">11. Acceptance</div>
+    <p style="margin-bottom: 16pt; line-height:1.7;">
+      By signing below, both Parties agree to the terms and conditions stated above.
+    </p>
+    <table class="sig-table">
+      <tr>
+        <td>
+          <div class="sig-party-name">For SUPPORTS SOLUTIONS PVT LTD</div>
+          <div class="sig-row">
+            <span class="sig-label">Name:</span>
+            <span class="sig-line"></span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Designation:</span>
+            <span class="sig-line"></span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Signature:</span>
+            <span class="sig-line"></span>
+          </div>
+        </td>
+        <td>
+          <div class="sig-party-name">For <span class="dynamic">{{ provider_name }}</span></div>
+          <div class="sig-row">
+            <span class="sig-label">Name:</span>
+            <span class="sig-filled">{{ provider_name }}</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Designation:</span>
+            <span class="sig-filled">{{ provider_designation if provider_designation else '' }}</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Signature:</span>
+            <span class="sig-line"></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

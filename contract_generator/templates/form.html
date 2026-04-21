@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPB — POP Contract Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:       #0d0d0d;
+      --paper:     #f7f4ef;
+      --cream:     #ede9e1;
+      --accent:    #1a3a5c;
+      --accent2:   #c8a96e;
+      --muted:     #6b6560;
+      --border:    #ccc8c0;
+      --white:     #ffffff;
+      --radius:    6px;
+      --shadow:    0 4px 24px rgba(0,0,0,0.09);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--accent);
+      color: var(--white);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .header-icon {
+      width: 46px; height: 46px;
+      background: var(--accent2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+
+    header p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--accent);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--cream);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title .dot {
+      width: 8px; height: 8px;
+      background: var(--accent2);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── FORM FIELDS ── */
+    .field {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      color: var(--ink);
+      background: var(--paper);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(26,58,92,0.1);
+      background: var(--white);
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b6560' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .field-hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    /* ── PREVIEW BADGE ── */
+    .preview-area {
+      background: var(--cream);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      min-height: 120px;
+    }
+
+    .preview-area h3 {
+      font-size: 11.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .preview-tag {
+      display: inline-block;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+      margin: 3px 4px 3px 0;
+    }
+
+    .preview-tag span {
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 12px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      padding: 13px 20px;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: #142e4a; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,58,92,0.3); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+    .btn-outline:hover { background: var(--cream); }
+
+    /* ── INFO STRIP ── */
+    .info-strip {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--accent) 0%, #25506e 100%);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13.5px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-strip .icon { font-size: 22px; }
+    .info-strip strong { font-weight: 600; }
+    .info-strip p { color: rgba(255,255,255,0.8); font-size: 12.5px; margin-top: 2px; }
+
+    /* ── LOADING STATE ── */
+    .btn-primary.loading {
+      opacity: 0.75;
+      pointer-events: none;
+    }
+    .btn-primary.loading::after {
+      content: '';
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-left: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .container { grid-template-columns: 1fr; }
+      .info-strip { grid-column: 1; }
+      header { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-icon">📄</div>
+  <div>
+    <h1>KPB — POP Contract Generator</h1>
+    <p>Pay-on-Performance Agreement &nbsp;·&nbsp; Dynamic PDF Builder</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── INFO STRIP ── -->
+  <div class="info-strip">
+    <span class="icon">✦</span>
+    <div>
+      <strong>Auto-generated contract</strong> — Fill in the fields below and download a professional PDF instantly.
+      <p>All content matches the original KPB POP Agreement format exactly.</p>
+    </div>
+  </div>
+
+  <!-- ══ LEFT: FORM ══ -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>Contract Details</div>
+
+    <form id="contractForm">
+      <div class="field">
+        <label>Service Provider Name</label>
+        <input type="text" name="provider_name" id="provider_name"
+               placeholder="e.g. Samiksha Dubey" value="Samiksha Dubey" required>
+      </div>
+
+      <div class="field">
+        <label>Provider Designation <span style="font-weight:400;">(optional)</span></label>
+        <input type="text" name="provider_designation" id="provider_designation"
+               placeholder="e.g. Freelance Consultant">
+      </div>
+
+      <div class="field">
+        <label>Agreement Date</label>
+        <input type="date" name="agreement_date" id="agreement_date" value="2026-04-20" required>
+        <p class="field-hint">Date mentioned in the opening paragraph</p>
+      </div>
+
+      <div class="field">
+        <label>Effective From Date</label>
+        <input type="date" name="effective_date" id="effective_date" value="2026-03-21" required>
+        <p class="field-hint">Section 1 — Effective Date &amp; Term</p>
+      </div>
+
+      <div class="field">
+        <label>Commission Percentage</label>
+        <select name="commission" id="commission">
+          <option value="5">5%</option>
+          <option value="10">10%</option>
+          <option value="15">15%</option>
+          <option value="20" selected>20%</option>
+          <option value="25">25%</option>
+          <option value="30">30%</option>
+          <option value="35">35%</option>
+          <option value="40">40%</option>
+          <option value="45">45%</option>
+          <option value="50">50%</option>
+        </select>
+        <p class="field-hint">Section 3 — Commercial Terms &amp; Section 4 — Payment Terms</p>
+      </div>
+
+      <div class="field">
+        <label>Jurisdiction City</label>
+        <input type="text" name="city" id="city"
+               placeholder="e.g. Greater Noida" value="Greater Noida" required>
+        <p class="field-hint">Section 9 — Dispute Resolution</p>
+      </div>
+    </form>
+  </div>
+
+  <!-- ══ RIGHT: PREVIEW + ACTIONS ══ -->
+  <div class="card">
+    <div class="card-title"><span class="dot"></span>Live Summary</div>
+
+    <div class="preview-area">
+      <h3>Fields that will appear in the contract</h3>
+      <div id="previewTags">
+        <span class="preview-tag"><span>Provider: </span><strong id="prev_name">Samiksha Dubey</strong></span>
+        <span class="preview-tag"><span>Agreement Date: </span><strong id="prev_adate">20th April 2026</strong></span>
+        <span class="preview-tag"><span>Effective From: </span><strong id="prev_edate">21st March 2026</strong></span>
+        <span class="preview-tag"><span>Commission: </span><strong id="prev_comm">20%</strong></span>
+        <span class="preview-tag"><span>Jurisdiction: </span><strong id="prev_city">Greater Noida</strong></span>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" id="downloadBtn" onclick="downloadPDF()">
+        ⬇ Download PDF Contract
+      </button>
+      <button class="btn btn-outline" onclick="previewContract()">
+        👁 Preview in Browser
+      </button>
+    </div>
+
+    <p style="font-size:12px; color:var(--muted); margin-top:14px; text-align:center; line-height:1.6;">
+      PDF is generated server-side using WeasyPrint.<br>
+      Layout matches the original KPB contract exactly.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  // ── Ordinal helper ──
+  function ordinal(n) {
+    const s = ['th','st','nd','rd'];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    return `${ordinal(d.getDate())} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  // ── Live preview update ──
+  function updatePreview() {
+    document.getElementById('prev_name').textContent = document.getElementById('provider_name').value || '—';
+    document.getElementById('prev_adate').textContent = formatDate(document.getElementById('agreement_date').value);
+    document.getElementById('prev_edate').textContent = formatDate(document.getElementById('effective_date').value);
+    document.getElementById('prev_comm').textContent = document.getElementById('commission').value + '%';
+    document.getElementById('prev_city').textContent = document.getElementById('city').value || '—';
+  }
+
+  ['provider_name','agreement_date','effective_date','commission','city'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updatePreview);
+    document.getElementById(id).addEventListener('change', updatePreview);
+  });
+
+  // ── Submit helpers ──
+  function getFormData() {
+    return new FormData(document.getElementById('contractForm'));
+  }
+
+  async function downloadPDF() {
+    const btn = document.getElementById('downloadBtn');
+    btn.classList.add('loading');
+    btn.textContent = 'Generating PDF…';
+
+    try {
+      const resp = await fetch('/generate-pdf', { method: 'POST', body: getFormData() });
+      if (!resp.ok) throw new Error('Server error');
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const name = document.getElementById('provider_name').value.replace(/\s+/g,'_') || 'Contract';
+      a.href = url; a.download = `POP_Contract_${name}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch(e) {
+      alert('PDF generation failed. Make sure the Flask server is running.');
+    } finally {
+      btn.classList.remove('loading');
+      btn.innerHTML = '⬇ Download PDF Contract';
+    }
+  }
+
+  function previewContract() {
+    const form = document.getElementById('contractForm');
+    const data = new FormData(form);
+    const tempForm = document.createElement('form');
+    tempForm.method = 'POST';
+    tempForm.action = '/preview';
+    tempForm.target = '_blank';
+    for (const [k, v] of data.entries()) {
+      const i = document.createElement('input');
+      i.type = 'hidden'; i.name = k; i.value = v;
+      tempForm.appendChild(i);
+    }
+    document.body.appendChild(tempForm);
+    tempForm.submit();
+    document.body.removeChild(tempForm);
+  }
+</script>
+</body>
+</html>
