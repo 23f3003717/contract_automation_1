@@ -35,39 +35,11 @@ def preview():
     data = get_form_data(request.form)
     return render_template('contract.html', **data)
 
-@app.route('/generate-pdf', methods=['POST'])
-def generate_pdf():
-    try:
-        data = get_form_data(request.form)
-        html_content = render_template('contract.html', **data)
 
-        pdf_bytes = asyncio.run(html_to_pdf(html_content))
-
-        filename = f"POP_Contract_{data['provider_name'].replace(' ', '_')}.pdf"
-
-        return send_file(
-            io.BytesIO(pdf_bytes),
-            mimetype='application/pdf',
-            as_attachment=True,
-            download_name=filename
-        )
-    except Exception as e:
-        app.logger.error(f"PDF generation error: {str(e)}")
-        return jsonify({'error': f'PDF generation failed: {str(e)}'}), 500
-
-async def html_to_pdf(html_content):
-    """Convert HTML string to PDF bytes using Playwright"""
-    try:
-        async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            page = await browser.new_page()
-            await page.set_content(html_content, wait_until='networkidle')
-            pdf_bytes = await page.pdf()
-            await browser.close()
-            return pdf_bytes
-    except Exception as e:
-        app.logger.error(f"Playwright error: {str(e)}")
-        raise
+@app.route('/download', methods=['POST'])
+def download():
+    data = get_form_data(request.form)
+    return render_template('contract.html', **data)
 
 def get_form_data(form):
     agreement_date = format_date(form.get('agreement_date', '2026-04-20'))
