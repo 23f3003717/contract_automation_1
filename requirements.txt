@@ -2,3 +2,6 @@ flask>=2.3.0
 playwright>=1.40.0
 Flask
 gunicorn
+weasyprint
+cairocffi
+pydyf
