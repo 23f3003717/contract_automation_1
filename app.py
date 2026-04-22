@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, send_file, jsonify
 import asyncio
 from playwright.async_api import async_playwright
-import io
 import os
+from flask import Flask, render_template, request, send_file
+from weasyprint import HTML
+import io
 from datetime import datetime
 
 app = Flask(__name__)
@@ -39,8 +41,17 @@ def preview():
 @app.route('/download', methods=['POST'])
 def download():
     data = get_form_data(request.form)
-    return render_template('contract.html', **data)
 
+    html = render_template('contract.html', **data)
+
+    pdf = HTML(string=html).write_pdf()
+
+    return send_file(
+        io.BytesIO(pdf),
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name="contract.pdf"
+    )
 def get_form_data(form):
     agreement_date = format_date(form.get('agreement_date', '2026-04-20'))
     effective_date = format_date(form.get('effective_date', '2026-03-21'))
